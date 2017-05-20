@@ -25,12 +25,26 @@ class ViewController: UIViewController {
         get { return _value }
         set {let oldValue = _value; _value = newValue; configure(oldValue: oldValue)}
     }
-    fileprivate func configure(oldValue: Value, deletingIndexPaths: [IndexPath] = []) {
+    
+    fileprivate func configure(oldValue: Value, deletingIndexPath: IndexPath? = nil) {
         if value.layout.cells.count > 0 && oldValue.layout.cells.count == 0 {
             tableView.reloadData()
         }
-        else if deletingIndexPaths.count > 0 {
-            tableView.deleteRows(at: deletingIndexPaths, with: .automatic)
+        else if let deletingIndexPath = deletingIndexPath {
+            tableView.beginUpdates()
+            defer {tableView.endUpdates() }
+            let layoutForDiff: Layout
+            var layoutAfterDeletingRow = oldValue.layout
+            layoutAfterDeletingRow.delete(indexPath: deletingIndexPath)
+            if layoutAfterDeletingRow.cells.count == value.layout.cells.count {
+                layoutForDiff = layoutAfterDeletingRow
+                tableView.deleteRows(at: [deletingIndexPath], with: .left)
+            }
+            else {
+                layoutForDiff = oldValue.layout
+            }
+            let diff = layoutForDiff → value.layout
+            tableView.reloadRows(at: diff.reload, with: .fade)
         }
         else {
             preconditionFailure("Not implemented")
@@ -102,7 +116,7 @@ extension ViewController: UITableViewDelegate {
         let result = model.remove(talkCellValue: tcv)
         let oldValue = value
         _value.layout = Layout(schedule: model)
-        configure(oldValue: oldValue, deletingIndexPaths: [indexPath])
+        configure(oldValue: oldValue, deletingIndexPath: indexPath)
     }
 }
 

@@ -34,7 +34,7 @@ struct Layout {
             }
         }
     }
-    let cells: [CellType]
+    var cells: [CellType]
     init(cells: [CellType]) {
         self.cells = cells
     }
@@ -120,8 +120,55 @@ extension Layout {
         preconditionFailure("Can't find header for index \(headerIndex)")
     }
     
+    mutating func delete(indexPath: IndexPath) {
+        self.cells.remove(at: indexPath.row)
+    }
+    
     func talkCell(indexPath: IndexPath) -> TalkCell.Value {
         guard case .talk(let tcv) = cells[indexPath.row] else { fatalError("Not a talk cell") }
         return tcv
     }
 }
+
+//MARK: Equalities
+func ==(lhs: HeaderCell.Value, rhs: HeaderCell.Value) -> Bool {
+    return lhs.title == rhs.title && lhs.lights == rhs.lights
+}
+func ==(lhs: TalkCell.Value, rhs: TalkCell.Value) -> Bool {
+    return lhs.title == rhs.title && lhs.date == rhs.date && lhs.image == rhs.image && lhs.difficultyType == rhs.difficultyType
+}
+func ==(lhs: Layout.CellType, rhs: Layout.CellType) -> Bool {
+    switch(lhs, rhs) {
+    case (.spacer(let a), .spacer(let b)) where a==b: return true
+    case (.header(let a), .header(let b)) where a==b: return true
+    case (.talk(let a), .talk(let b)) where a==b: return true
+    case (.noTalks, .noTalks): return true
+    default: return false
+    }
+}
+extension Layout.CellType: Equatable { }
+
+//MARK: diff
+extension Layout {
+    fileprivate func get(index: Int) -> Layout.CellType? {
+        if index < cells.count { return cells[index] }
+        return nil
+    }
+}
+infix operator → : AdditionPrecedence
+func → (lhs: Layout, rhs: Layout) -> (reload: [IndexPath], add: [IndexPath]) {
+    var add: [IndexPath] = []
+    var reload: [IndexPath] = []
+    for i in 0..<max(lhs.cells.count, rhs.cells.count) {
+        if lhs.get(index: i) != rhs.get(index: i) {
+            if lhs.get(index: i) != nil {
+                reload.append(IndexPath(row: i, section: 0))
+            }
+            else {
+                add.append(IndexPath(row: i, section: 0))
+            }
+        }
+    }
+    return (reload: reload, add: add)
+}
+
