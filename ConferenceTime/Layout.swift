@@ -163,8 +163,7 @@ extension Layout {
     }
 }
 infix operator → : AdditionPrecedence
-func → (lhs: Layout, rhs: Layout) -> (reload: [IndexPath], add: [IndexPath]) {
-    var add: [IndexPath] = []
+func → (lhs: Layout, rhs: Layout) -> [IndexPath] {
     var reload: [IndexPath] = []
     for i in 0..<max(lhs.cells.count, rhs.cells.count) {
         if lhs.get(index: i) != rhs.get(index: i) {
@@ -172,10 +171,10 @@ func → (lhs: Layout, rhs: Layout) -> (reload: [IndexPath], add: [IndexPath]) {
                 reload.append(IndexPath(row: i, section: 0))
             }
             else {
-                add.append(IndexPath(row: i, section: 0))
+                preconditionFailure("We don't need to add rows in this app, so it isn't implemented")
             }
         }
     }
-    return (reload: reload, add: add)
+    return reload
 }
 

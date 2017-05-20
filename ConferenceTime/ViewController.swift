@@ -45,7 +45,7 @@ class ViewController: UIViewController {
                 layoutForDiff = oldValue.layout
             }
             let diff = layoutForDiff → value.layout
-            tableView.reloadRows(at: diff.reload, with: .fade)
+            tableView.reloadRows(at: diff, with: .fade)
         }
         else {
             preconditionFailure("Not implemented")
