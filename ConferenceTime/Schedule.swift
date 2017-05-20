@@ -40,8 +40,10 @@ struct Schedule {
         for (day, events) in map {
             let _events = events.filter({$0.name != talkCellValue.title})
             map[day] = _events
-            if events.count > 0 && _events.count == 0 { return false }
+            if events.count != _events.count {
+                return true
+            }
         }
-        return true
+        return false
     }
 }

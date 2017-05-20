@@ -18,16 +18,24 @@ class ViewController: UIViewController {
         var layout: Layout
     }
     
-    var value: Value = Value(layout: Layout(cells: [])) {
-        didSet {
-            if value.layout.cells.count > 0 && oldValue.layout.cells.count == 0 {
-                tableView.reloadData()
-            }
-            else {
-                preconditionFailure("Not implemented")
-            }
-            timeBar.value = TimeBar.Value(days: [Date(), Date(), Date(), Date(), Date()], index: 0)
+    
+    fileprivate var _value: Value = Value(layout: Layout(cells: []))
+    
+    var value: Value {
+        get { return _value }
+        set {let oldValue = _value; _value = newValue; configure(oldValue: oldValue)}
+    }
+    fileprivate func configure(oldValue: Value, deletingIndexPaths: [IndexPath] = []) {
+        if value.layout.cells.count > 0 && oldValue.layout.cells.count == 0 {
+            tableView.reloadData()
         }
+        else if deletingIndexPaths.count > 0 {
+            tableView.deleteRows(at: deletingIndexPaths, with: .automatic)
+        }
+        else {
+            preconditionFailure("Not implemented")
+        }
+        timeBar.value = TimeBar.Value(days: [Date(), Date(), Date(), Date(), Date()], index: 0)
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -92,10 +100,9 @@ extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         let tcv = value.layout.talkCell(indexPath: indexPath)
         let result = model.remove(talkCellValue: tcv)
-        if result {
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-        }
-        value.layout = Layout(schedule: model)
+        let oldValue = value
+        _value.layout = Layout(schedule: model)
+        configure(oldValue: oldValue, deletingIndexPaths: [indexPath])
     }
 }
 
