@@ -128,6 +128,13 @@ extension Layout {
         guard case .talk(let tcv) = cells[indexPath.row] else { fatalError("Not a talk cell") }
         return tcv
     }
+    
+    func contentInset(tableViewHeight: CGFloat) -> UIEdgeInsets {
+        if cells.count == 0 { return UIEdgeInsets.zero }
+        let insetHeight = cells[lastSpacerIndexPath!.row..<cells.count].reduce(0, {$0+$1.height})
+        let inset = max(tableViewHeight - insetHeight, 0)
+        return UIEdgeInsets(top: 0, left: 0, bottom: inset, right: 0)
+    }
 }
 
 //MARK: Equalities

@@ -54,11 +54,7 @@ class ViewController: UIViewController {
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if value.layout.cells.count > 0 {
-            let insetHeight = value.layout.cells[value.layout.lastSpacerIndexPath!.row..<value.layout.cells.count].reduce(0, {$0+$1.height})
-            let inset = max(tableView.frame.height - insetHeight, 0)
-            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inset, right: 0)
-        }
+        tableView.contentInset = value.layout.contentInset(tableViewHeight: tableView.bounds.height)
 
     }
 
