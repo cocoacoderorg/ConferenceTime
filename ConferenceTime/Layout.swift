@@ -8,8 +8,7 @@
 
 import UIKit
 
-
-
+///The layout for our tableview
 struct Layout {
     enum CellType {
         case spacer(CGFloat)
@@ -58,15 +57,13 @@ struct Layout {
             else {
                 _cells.append(CellType.noTalks)
             }
-            
         }
-        
-        
         cells = _cells
     }
 }
 
 extension Layout {
+    ///Calculates the index of a header containing a given indexpath
     func headerIndexPath(for index: IndexPath) -> IndexPath {
         let last: Int
         if index.row == cells.count - 1 {
@@ -82,6 +79,7 @@ extension Layout {
         }
         preconditionFailure("No header for indexPath \(index)")
     }
+    ///The index of the last spacer cell in the layout
     var lastSpacerIndexPath: IndexPath? {
         for (x, cell) in cells.enumerated().reversed() {
             if case .spacer = cell {
@@ -90,6 +88,7 @@ extension Layout {
         }
         return nil
     }
+    ///The index path for a given content offset into the tableview
     func indexPath(contentOffset: CGPoint) -> IndexPath? {
         var y: CGFloat = 0
         for (x, cell) in cells.enumerated() {
@@ -98,6 +97,7 @@ extension Layout {
         }
         return nil
     }
+    ///Returns the index for a header (e.g. the `i`th header)
     func index(header indexPath: IndexPath) -> Int {
         var index = 0
         for cell in cells[0..<indexPath.row] {
@@ -107,6 +107,7 @@ extension Layout {
         }
         return index
     }
+    ///Finds the spacer above the `i`th header
     func spacerIndexPath(headerIndex: Int) -> IndexPath {
         var index = 0
         for (x,cell) in cells.enumerated() {
@@ -120,15 +121,19 @@ extension Layout {
         preconditionFailure("Can't find header for index \(headerIndex)")
     }
     
+    ///Delete a cell at the given index path
     mutating func delete(indexPath: IndexPath) {
         self.cells.remove(at: indexPath.row)
     }
     
+    ///Finds a talk cell at the index path
     func talkCell(indexPath: IndexPath) -> TalkCell.Value {
         guard case .talk(let tcv) = cells[indexPath.row] else { fatalError("Not a talk cell") }
         return tcv
     }
     
+    ///Calculates the appropriate content inset for the layout
+    ///Such that the user can scroll the final "day" all the way to the top
     func contentInset(tableViewHeight: CGFloat) -> UIEdgeInsets {
         if cells.count == 0 { return UIEdgeInsets.zero }
         let insetHeight = cells[lastSpacerIndexPath!.row..<cells.count].reduce(0, {$0+$1.height})
@@ -138,12 +143,6 @@ extension Layout {
 }
 
 //MARK: Equalities
-func ==(lhs: HeaderCell.Value, rhs: HeaderCell.Value) -> Bool {
-    return lhs.title == rhs.title && lhs.lights == rhs.lights
-}
-func ==(lhs: TalkCell.Value, rhs: TalkCell.Value) -> Bool {
-    return lhs.title == rhs.title && lhs.date == rhs.date && lhs.image == rhs.image && lhs.difficultyType == rhs.difficultyType
-}
 func ==(lhs: Layout.CellType, rhs: Layout.CellType) -> Bool {
     switch(lhs, rhs) {
     case (.spacer(let a), .spacer(let b)) where a==b: return true

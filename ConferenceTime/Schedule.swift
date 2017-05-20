@@ -36,14 +36,10 @@ struct Schedule {
         self.map = _map
         self.days = daySequence.sorted()
     }
-    mutating func remove(talkCellValue: TalkCell.Value) -> Bool {
+    mutating func remove(talkCellValue: TalkCell.Value) {
         for (day, events) in map {
             let _events = events.filter({$0.name != talkCellValue.title})
             map[day] = _events
-            if events.count != _events.count {
-                return true
-            }
         }
-        return false
     }
 }

@@ -110,3 +110,11 @@ extension TalkCell {
     }
 }
 
+//MARK: equalities
+func ==(lhs: HeaderCell.Value, rhs: HeaderCell.Value) -> Bool {
+    return lhs.title == rhs.title && lhs.lights == rhs.lights
+}
+func ==(lhs: TalkCell.Value, rhs: TalkCell.Value) -> Bool {
+    return lhs.title == rhs.title && lhs.date == rhs.date && lhs.imageURL == rhs.imageURL && lhs.difficultyType == rhs.difficultyType
+}
+

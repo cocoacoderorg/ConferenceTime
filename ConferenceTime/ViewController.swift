@@ -115,7 +115,7 @@ extension ViewController: UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         let tcv = value.layout.talkCell(indexPath: indexPath)
-        let result = model.remove(talkCellValue: tcv)
+        model.remove(talkCellValue: tcv)
         let oldValue = value
         _value.layout = Layout(schedule: model)
         configure(oldValue: oldValue, deletingIndexPath: indexPath)
