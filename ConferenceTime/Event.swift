@@ -18,7 +18,7 @@ struct Event {
     let name: String
     let time: Date
     let difficulty: Difficulty
-    let image: UIImage
+    let imageURL: URL
     
     static func load() throws -> [Event] {
         assert(Thread.current != Thread.main)
@@ -38,7 +38,7 @@ enum Errors: Error {
     case cantParseTime(String)
     case invalidDifficulty(String)
     case invalidURL
-    case invalidImage(String)
+    case invalidImage(URL)
     case cantParseTalk
 }
 
@@ -77,15 +77,10 @@ extension Event {
         self.difficulty = _difficulty
         
         let imageString: String = try json.jsonSubscript(3)
-        guard let imageURL = URL(string: "https://conference-time.s3.amazonaws.com/\(imageString)") else {
+        guard let _imageURL = URL(string: "https://conference-time.s3.amazonaws.com/\(imageString)") else {
             throw Errors.invalidURL
         }
-        let imageRequest = URLRequest(url: imageURL)
-        let imageData = try URLSession.shared.synchronousDataRequestWithRequest(imageRequest).getData()
-        guard let image = UIImage(data: imageData) else {
-            throw Errors.invalidImage(imageString)
-        }
-        self.image = image
+        imageURL = _imageURL
     }
 }
 

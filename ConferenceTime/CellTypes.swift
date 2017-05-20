@@ -58,7 +58,8 @@ extension TalkCell {
         let title: String
         let date: String
         let difficultyType: DifficultyType
-        let image: UIImage
+        var image: UIImage?
+        let imageURL: URL
         
         enum DifficultyType {
             case red
@@ -88,8 +89,23 @@ extension TalkCell {
         init(event: Event) {
             self.title = event.name
             self.date = timeFormatter.string(from: event.time)
-            self.image = event.image
+            self.image = nil
             self.difficultyType = DifficultyType(difficulty: event.difficulty)
+            self.imageURL = event.imageURL
+        }
+        
+        mutating func loadImage() throws {
+            assert(Thread.current != Thread.main)
+            let imageRequest = URLRequest(url: imageURL)
+            let imageData = try URLSession.shared.synchronousDataRequestWithRequest(imageRequest).getData()
+            guard let _image = UIImage(data: imageData) else {
+                throw Errors.invalidImage(imageURL)
+            }
+            image = _image
+        }
+        
+        mutating func merge(oldValue: TalkCell.Value) {
+            image = oldValue.image
         }
     }
 }
