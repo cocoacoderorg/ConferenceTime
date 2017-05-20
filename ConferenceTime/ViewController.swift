@@ -50,7 +50,9 @@ class ViewController: UIViewController {
         else {
             preconditionFailure("Not implemented")
         }
-        timeBar.value = TimeBar.Value(days: value.days, index: 0)
+        if timeBar.value == nil {
+            timeBar.value = TimeBar.Value(days: value.days, index: 0)
+        }
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
