@@ -16,10 +16,11 @@ class ViewController: UIViewController {
     
     struct Value {
         var layout: Layout
+        var days: [Day]
     }
     
     
-    fileprivate var _value: Value = Value(layout: Layout(cells: []))
+    fileprivate var _value: Value = Value(layout: Layout(cells: []), days: [])
     
     var value: Value {
         get { return _value }
@@ -49,7 +50,7 @@ class ViewController: UIViewController {
         else {
             preconditionFailure("Not implemented")
         }
-        timeBar.value = TimeBar.Value(days: [Date(), Date(), Date(), Date(), Date()], index: 0)
+        timeBar.value = TimeBar.Value(days: value.days, index: 0)
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -71,7 +72,10 @@ class ViewController: UIViewController {
                 let e = try Event.load()
                 self.model = Schedule(events: e)
                 DispatchQueue.main.async {
-                    self.value.layout = Layout(schedule: self.model)
+                    var v = self.value
+                    v.layout = Layout(schedule: self.model)
+                    v.days = self.model.days
+                    self.value = v
                 }
             }
         }

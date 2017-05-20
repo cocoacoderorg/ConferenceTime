@@ -36,7 +36,7 @@ private class Circle: UIView {
 
 class TimeBar: UIView {
     struct Value {
-        let days: [Date]
+        let days: [Day]
         var index: Int
     }
     weak var delegate: TimeBarDelegate? = nil
