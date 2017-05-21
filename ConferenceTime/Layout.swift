@@ -32,6 +32,12 @@ struct Layout {
             case .noTalks: return 89
             }
         }
+        var editingStyle: UITableViewCellEditingStyle {
+            switch(self) {
+            case .header, .noTalks, .spacer: return .none
+            case .talk: return .delete
+            }
+        }
     }
     fileprivate var cells: [CellType]
     init(cells: [CellType]) {

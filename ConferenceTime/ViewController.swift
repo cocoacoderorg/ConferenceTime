@@ -103,15 +103,10 @@ extension ViewController: UITableViewDataSource {
 
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let row = value.layout[indexPath]
-        return row.height
+        return value.layout[indexPath].height
     }
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        let row = value.layout[indexPath]
-        switch(row) {
-        case .header, .noTalks, .spacer: return .none
-        case .talk: return .delete
-        }
+        return value.layout[indexPath].editingStyle
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         let tcv = value.layout.talkCell(indexPath: indexPath)
