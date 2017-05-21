@@ -58,8 +58,7 @@ class TimeBar: UIView {
         self.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(tapped)))
 
     }
-    
-    @objc private func tapped(sender: UITapGestureRecognizer) {
+    private func bestCircle(for sender: UITapGestureRecognizer) -> Circle {
         let location = sender.location(in: self)
         //find the closest circle
         var best: (circle: Circle, distance: CGFloat) = (circle: circles[0], distance: CGFloat.greatestFiniteMagnitude)
@@ -69,7 +68,11 @@ class TimeBar: UIView {
                 best = (circle: circle, distance: distance)
             }
         }
-        value.index = circles.index(of: best.circle)!
+        return best.circle
+    }
+    
+    @objc private func tapped(sender: UITapGestureRecognizer) {
+        value.index = circles.index(of: bestCircle(for: sender))!
     }
     
     override init(frame: CGRect) {
