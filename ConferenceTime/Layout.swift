@@ -33,7 +33,7 @@ struct Layout {
             }
         }
     }
-    var cells: [CellType]
+    fileprivate var cells: [CellType]
     init(cells: [CellType]) {
         self.cells = cells
     }
@@ -60,13 +60,17 @@ struct Layout {
         }
         cells = _cells
     }
+    subscript(indexPath: IndexPath) -> CellType {
+        return self.cells[indexPath.row]
+    }
+    var cellCount: Int { return self.cells.count }
 }
 
 extension Layout {
     ///Calculates the index of a header containing a given indexpath
     func headerIndexPath(for index: IndexPath) -> IndexPath {
         let last: Int
-        if index.row == cells.count - 1 {
+        if index.row ==  cellCount - 1 {
             last = index.row
         }
         else {

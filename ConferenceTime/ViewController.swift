@@ -28,7 +28,7 @@ class ViewController: UIViewController {
     }
     
     fileprivate func configure(oldValue: Value, deletingIndexPath: IndexPath? = nil) {
-        if value.layout.cells.count > 0 && oldValue.layout.cells.count == 0 {
+        if value.layout.cellCount > 0 && oldValue.layout.cellCount == 0 {
             tableView.reloadData()
         }
         else if let deletingIndexPath = deletingIndexPath {
@@ -37,7 +37,7 @@ class ViewController: UIViewController {
             let layoutForDiff: Layout
             var layoutAfterDeletingRow = oldValue.layout
             layoutAfterDeletingRow.delete(indexPath: deletingIndexPath)
-            if layoutAfterDeletingRow.cells.count == value.layout.cells.count {
+            if layoutAfterDeletingRow.cellCount == value.layout.cellCount {
                 layoutForDiff = layoutAfterDeletingRow
                 tableView.deleteRows(at: [deletingIndexPath], with: .left)
             }
@@ -84,10 +84,10 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return value.layout.cells.count
+        return value.layout.cellCount
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let row = value.layout.cells[indexPath.row]
+        let row = value.layout[indexPath]
         let c = tableView.dequeueReusableCell(withIdentifier: row.reuseIdentifier, for: indexPath)
         switch(row) {
         case .header(let hcv):
@@ -103,11 +103,11 @@ extension ViewController: UITableViewDataSource {
 
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let row = value.layout.cells[indexPath.row]
+        let row = value.layout[indexPath]
         return row.height
     }
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        let row = value.layout.cells[indexPath.row]
+        let row = value.layout[indexPath]
         switch(row) {
         case .header, .noTalks, .spacer: return .none
         case .talk: return .delete

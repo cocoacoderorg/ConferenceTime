@@ -33,7 +33,9 @@ class TalkCell: UITableViewCell {
                 do {
                     try v.loadImage()
                     DispatchQueue.main.async {
-                        self.value = v
+                        if self.value.imageURL == v.imageURL {
+                            self.value = v
+                        }
                     }
                 }
                 catch {
