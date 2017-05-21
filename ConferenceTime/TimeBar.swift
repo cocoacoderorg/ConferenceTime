@@ -48,10 +48,10 @@ class TimeBar: UIView {
     private func prepare() {
         grayBar.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(grayBar)
-        grayBar.backgroundColor = UIColor.lightGray
-        grayBar.cornerRadius = 10
+        grayBar.backgroundColor = UIColor( white: 0.9, alpha: 1.0 )
+        grayBar.cornerRadius = 12
         self.addConstraint(NSLayoutConstraint(item: grayBar, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0))
-        self.addConstraint(NSLayoutConstraint(item: grayBar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 25))
+        self.addConstraint(NSLayoutConstraint(item: grayBar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 24))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-(25)-[grayBar]-(25)-|", options: [], metrics: nil, views: ["grayBar":grayBar]))
         
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapped)))

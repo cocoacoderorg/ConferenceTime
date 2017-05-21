@@ -27,8 +27,8 @@ struct Layout {
         var height: CGFloat {
             switch(self) {
             case .spacer(let f): return f
-            case .header: return 44
-            case .talk: return 89
+            case .header:  return 44
+            case .talk:    return 80
             case .noTalks: return 89
             }
         }

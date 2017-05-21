@@ -203,7 +203,7 @@
 				TargetAttributes = {
 					3A23644C1EBF70F8005AE5E6 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = V2ZPDAMSL2;
+						DevelopmentTeam = TCS3YC9H96;
 						ProvisioningStyle = Automatic;
 					};
 					3A2364601EBF70F8005AE5E6 = {
@@ -411,7 +411,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = V2ZPDAMSL2;
+				DEVELOPMENT_TEAM = TCS3YC9H96;
 				INFOPLIST_FILE = ConferenceTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.dca.ConferenceTime;
@@ -424,7 +424,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = V2ZPDAMSL2;
+				DEVELOPMENT_TEAM = TCS3YC9H96;
 				INFOPLIST_FILE = ConferenceTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.dca.ConferenceTime;
