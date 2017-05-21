@@ -57,7 +57,6 @@ class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.contentInset = value.layout.contentInset(tableViewHeight: tableView.bounds.height)
-
     }
 
     override func viewDidLoad() {
