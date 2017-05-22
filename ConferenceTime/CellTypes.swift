@@ -16,7 +16,8 @@ private let weekDayFormatter: DateFormatter = {
 
 private let shortDateFormatter: DateFormatter = {
     let df = DateFormatter()
-    df.dateFormat = "MM/dd"
+    //df.dateFormat = "MM/dd"
+    df.dateFormat = "d MMM"
     return df
 }()
 
@@ -39,17 +40,29 @@ extension HeaderCell {
         
         init(lights: Set<Light>, date: Date) {
             self.lights = lights
-            let _title = NSMutableAttributedString(string: weekDayFormatter.string(from: date) + " - ", attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .headline)])
-            _title.append(NSAttributedString(string: shortDateFormatter.string(from: date), attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .subheadline)]))
+            let _title = NSMutableAttributedString(string: weekDayFormatter.string(from: date) + "  ", attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .headline)])
+            _title.append(NSAttributedString(string: shortDateFormatter.string(from: date), attributes: [NSFontAttributeName: UIFont.systemFont( ofSize: 13.0 )]))
             title = _title
         }
         
     }
 }
 
+private let blueTimeFormatter : DateComponentsFormatter = {
+    let result = DateComponentsFormatter()
+    
+    result.allowedUnits = [.hour, .minute]
+    result.unitsStyle   = .full
+    result.zeroFormattingBehavior = .dropLeading
+
+    return result
+}()
+
 private let timeFormatter: DateFormatter = {
     let df = DateFormatter()
-    df.dateFormat = "hh:mm a"
+    df.dateFormat = "h:mma"
+    df.amSymbol = "a"
+    df.pmSymbol = "p"
     return df
 }()
 
@@ -88,7 +101,7 @@ extension TalkCell {
         
         init(event: Event) {
             self.title = event.name
-            self.date = timeFormatter.string(from: event.time)
+            self.date  = timeFormatter.string(from: event.time)
             self.image = nil
             self.difficultyType = DifficultyType(difficulty: event.difficulty)
             self.imageURL = event.imageURL
